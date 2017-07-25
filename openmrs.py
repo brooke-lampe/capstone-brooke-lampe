@@ -18,7 +18,7 @@ class RESTConnection(object):
         self.authority = authority
         self.port = port
         credentials = '{username}:{password}'.format(username=username, password=password)
-        credentials = base64.standard_b64encode(credentials)
+        credentials = base64.standard_b64encode(credentials.encode('UTF8')).decode('UTF8')
         self.headers = {
             'Authorization': 'Basic {credentials}'.format(credentials=credentials),
             'Content-type': 'application/json',
