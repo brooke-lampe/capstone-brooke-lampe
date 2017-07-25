@@ -18,9 +18,7 @@ class RestApp(App):
         self.openmrs_connection = RESTConnection('localhost', 8080, 'admin', 'Admin123')
 
     def load_locations(self):
-        results_layout = self.root.ids.results
-        for moribund in tuple(results_layout.children):
-            results_layout.remove_widget(moribund)
+        self.root.ids.results.clear_widgets()
         self.openmrs_connection.send_request('location', None, self.on_locations_loaded,
                                              self.on_locations_not_loaded, self.on_locations_not_loaded)
 
@@ -30,8 +28,7 @@ class RestApp(App):
             results_layout.add_widget(Label(text=result['display']))
 
     def on_locations_not_loaded(self, request, error):
-        results_layout = self.root.ids.results
-        results_layout.add_widget(Label(text='[Failed to load locations]'))
+        self.root.ids.results.add_widget(Label(text='[Failed to load locations]'))
         Logger.error('RestApp: {error}'.format(error=error))
 
 
