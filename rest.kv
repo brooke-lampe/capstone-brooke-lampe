@@ -1,8 +1,34 @@
-BoxLayout:
-    orientation: 'vertical'
-    BoxLayout:
-        orientation: 'vertical'
-        id: results
-    Button:
-        text: 'Load Locations'
-        on_press: app.load_locations()
+ScreenManager:
+    Screen:
+        name: 'enter'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: 'username:'
+                TextInput:
+                    id: username
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: 'password:'
+                TextInput:
+                    id: password
+            Button:
+                text: 'Log In'
+                size_hint: (None, None)
+                size: (self.texture_size[0] + 64, self.texture_size[1] + 64)
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'location'
+    Screen:
+        name: 'location'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                orientation: 'vertical'
+                id: results
+            Button:
+                text: 'Load Locations'
+                on_press: app.load_locations()
