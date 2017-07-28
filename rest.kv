@@ -15,11 +15,13 @@ ScreenManager:
                     text: 'password:'
                 TextInput:
                     id: password
+                    password: True
             Button:
                 text: 'Log In'
                 size_hint: (None, None)
                 size: (self.texture_size[0] + 64, self.texture_size[1] + 64)
                 on_press:
+                    app.connect()
                     root.transition.direction = 'left'
                     root.current = 'location'
     Screen:
@@ -32,3 +34,24 @@ ScreenManager:
             Button:
                 text: 'Load Locations'
                 on_press: app.load_locations()
+            Button:
+                text: 'Advance'
+                on_press:
+                    root.transition.direction = 'left'
+                    root.current = 'selection'
+    Screen:
+        name: 'selection'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    text: 'OpenMRS ID:'
+                TextInput:
+                    id: openmrs_id
+            BoxLayout:
+                orientation: 'vertical'
+                id: patient
+            Button:
+                text: 'Load Patient'
+                on_press: app.load_patient()
