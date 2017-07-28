@@ -9,6 +9,7 @@ ScreenManager:
                     text: 'username:'
                 TextInput:
                     id: username
+                    text: 'admin'
             BoxLayout:
                 orientation: 'horizontal'
                 Label:
@@ -16,14 +17,19 @@ ScreenManager:
                 TextInput:
                     id: password
                     password: True
+                    text: 'Admin123'
+            BoxLayout:
+                orientation: 'vertical'
+                id: verify
             Button:
                 text: 'Log In'
                 size_hint: (None, None)
                 size: (self.texture_size[0] + 64, self.texture_size[1] + 64)
                 on_press:
                     app.connect()
+                    app.verify()
                     root.transition.direction = 'left'
-                    root.current = 'location'
+                    #root.current = 'location'
     Screen:
         name: 'location'
         BoxLayout:
