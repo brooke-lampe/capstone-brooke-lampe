@@ -16,15 +16,15 @@ class RestApp(App):
         self.openmrs_connection = RESTConnection('localhost', 8080, self.root.ids.username.text, self.root.ids.password.text)
         self.root.ids.password.text = ""
 
-    def verify(self):
-        self.root.ids.verify.clear_widgets()
+    def load_session(self):
+        self.root.ids.session.clear_widgets()
         self.openmrs_connection.send_request('session', None, self.on_session_loaded,
                                              self.on_session_not_loaded, self.on_session_not_loaded)
 
     def on_session_loaded(self, request, response):
-        verify_layout = self.root.ids.verify
+        session_layout = self.root.ids.session
         #for result in response['results']:
-        verify_layout.add_widget(Label(text=str(response)))
+        session_layout.add_widget(Label(text=str(response)))
         print("Success")
         self.root.current = 'location'
 
@@ -76,7 +76,7 @@ class RestApp(App):
         self.root.ids.patient.clear_widgets()
         print(self.root.ids.openmrs_id.text)
         print(patient_uuid)
-        encounters_request = 'encounter?patient={patient_uuid}&limit=10'.format(patient_uuid=patient_uuid)
+        encounters_request = 'encounter?patient={patient_uuid}&limit=10&custom:(uuid,datatype:(uuid,name),conceptClass,names:ref)'.format(patient_uuid=patient_uuid)
         print(encounters_request)
         self.openmrs_connection.send_request(encounters_request, None, self.on_encounters_loaded,
                                              self.on_encounters_not_loaded, self.on_encounters_not_loaded)
