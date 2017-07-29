@@ -14,7 +14,6 @@ class RestApp(App):
 
     def connect(self):
         self.openmrs_connection = RESTConnection('localhost', 8080, self.root.ids.username.text, self.root.ids.password.text)
-        self.root.ids.password.text = ""
 
     def load_session(self):
         self.root.ids.session.clear_widgets()
@@ -22,40 +21,21 @@ class RestApp(App):
                                              self.on_session_not_loaded, self.on_session_not_loaded)
 
     def on_session_loaded(self, request, response):
-        session_layout = self.root.ids.session
-        #for result in response['results']:
-        session_layout.add_widget(Label(text=str(response)))
-        print("Success")
-        self.root.current = 'location'
+        if response['authenticated']:
+            self.root.ids.session2.text = 'Welcome, {user}, you have logged in successfully.'.format(user=response['user']['display'])
+            self.root.current = 'selection'
+        else:
+            self.root.ids.session.text = 'Unable to authenticate.  Invalid username or password.'
+            self.root.ids.session2.text = 'Please verify credentials and try again.'
+            self.root.ids.password.text = ''
 
     def on_session_not_loaded(self, request, error):
-        self.root.ids.verify.add_widget(Label(text='[Failed to connect.  Invalid username or password]'))
+        self.root.ids.session.text = 'Unable to connect.'
+        self.root.ids.session2.text = 'Please verify internet connection and try again.'
         Logger.error('RestApp: {error}'.format(error=error))
-        print("Failure")
-
-    def load_locations(self):
-        self.root.ids.results.clear_widgets()
-        self.openmrs_connection.send_request('location', None, self.on_locations_loaded,
-                                             self.on_locations_not_loaded, self.on_locations_not_loaded)
-
-    def on_locations_loaded(self, request, response):
-        results_layout = self.root.ids.results
-        for result in response['results']:
-            results_layout.add_widget(Label(text=result['display']))
-        print(str(response))
-        recent_username = self.root.ids.username.text
-        #Do I need the above line?  Username should remain in the TextInput
-        #Later on, this will become a confirmation that the login was successful and will not be shown
-
-    def on_locations_not_loaded(self, request, error):
-        self.root.ids.results.add_widget(Label(text='[Failed to load locations]'))
-        Logger.error('RestApp: {error}'.format(error=error))
-        #Later on, this will become an error that the login was not successful and will not be shown
 
     def load_patient(self):
-        self.root.ids.patient.clear_widgets()
-        print(self.root.ids.openmrs_id.text)
-        self.openmrs_connection.send_request('patient?q=10002T', None, self.on_patient_loaded,
+        self.openmrs_connection.send_request('patient?q={openmrs_id}'.format(openmrs_id=self.root.ids.openmrs_id.text), None, self.on_patient_loaded,
                                              self.on_patient_not_loaded, self.on_patient_not_loaded)
 
     def on_patient_loaded(self, request, response):
@@ -92,8 +72,22 @@ class RestApp(App):
         self.root.ids.patient.add_widget(Label(text='[Failed to load patient information.  Please try again.]'))
         Logger.error('RestApp: {error}'.format(error=error))
 
-    #functions for load_encounters
-    #Try full to get more information about vitals
+    #The code below will ultimately be deleted
+    def load_locations(self):
+        self.root.ids.results.clear_widgets()
+        self.openmrs_connection.send_request('location', None, self.on_locations_loaded,
+                                             self.on_locations_not_loaded, self.on_locations_not_loaded)
+
+    def on_locations_loaded(self, request, response):
+        results_layout = self.root.ids.results
+        for result in response['results']:
+            results_layout.add_widget(Label(text=result['display']))
+        print(str(response))
+
+    def on_locations_not_loaded(self, request, error):
+        self.root.ids.results.add_widget(Label(text='[Failed to load locations]'))
+        Logger.error('RestApp: {error}'.format(error=error))
+
 
 if __name__ == "__main__":
     app = RestApp()
