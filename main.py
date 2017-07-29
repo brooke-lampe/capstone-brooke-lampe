@@ -1,13 +1,10 @@
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.uix.label import Label
-from kivy.properties import StringProperty
 from openmrs import RESTConnection
 
+
 class RestApp(App):
-    recent_username = StringProperty("")
-    patient_uuid = StringProperty("")
-    encounters_request = StringProperty("")
 
     def __init__(self, **kwargs):
         super(RestApp, self).__init__(**kwargs)
@@ -39,34 +36,53 @@ class RestApp(App):
                                              self.on_patient_not_loaded, self.on_patient_not_loaded)
 
     def on_patient_loaded(self, request, response):
-        patient_layout = self.root.ids.patient
-        #patient_layout.add_widget(Label(text=str(response)))
-        print(str(response))
+        patient_uuid = 'NULL'
         for result in response['results']:
-            patient_layout.add_widget(Label(text=result['display']))
             patient_uuid = result['uuid']
-        print(patient_uuid)
-        self.load_encounters(patient_uuid)
+            self.load_encounters(patient_uuid)
+            self.root.current = 'summary'
+
+        if patient_uuid == 'NULL':
+            self.root.ids.retrieve.text = 'Unable to retrieve patient information.'
+            self.root.ids.retrieve2.text = 'Please verify that OpenMRS ID is correct and try again.'
 
     def on_patient_not_loaded(self, request, error):
-        self.root.ids.patient.add_widget(Label(text='[Failed to load patient information.  Please try again.]'))
+        self.root.ids.retrieve.text = 'Unable to connect.'
+        self.root.ids.retrieve2.text = 'Please verify internet connection and try again.'
         Logger.error('RestApp: {error}'.format(error=error))
 
     def load_encounters(self, patient_uuid):
-        self.root.ids.patient.clear_widgets()
-        print(self.root.ids.openmrs_id.text)
-        print(patient_uuid)
-        encounters_request = 'encounter?patient={patient_uuid}&limit=10&custom:(uuid,datatype:(uuid,name),conceptClass,names:ref)'.format(patient_uuid=patient_uuid)
-        print(encounters_request)
+        encounters_request = 'encounter?patient={patient_uuid}&limit=10&v=full'.format(patient_uuid=patient_uuid)
         self.openmrs_connection.send_request(encounters_request, None, self.on_encounters_loaded,
                                              self.on_encounters_not_loaded, self.on_encounters_not_loaded)
 
     def on_encounters_loaded(self, request, response):
-        patient_layout = self.root.ids.patient
-        #patient_layout.add_widget(Label(text=str(response)))
-        print(str(response))
+        data = []
+
         for result in response['results']:
-            patient_layout.add_widget(Label(text=result['display']))
+            for ob in result['obs']:
+                data.append(ob['display'])
+                data.append(ob['obsDatetime'])
+                #print(ob['display'])
+                #print(ob['obsDatetime'])
+
+        self.display_vitals(data)
+
+    def display_vitals(self, data):
+        vitals = ['Height', 'Weight', 'Temperature', 'Pulse', 'Respiratory rate', 'Systolic blood pressure', 'Diastolic blood pressure', 'Blood oxygen saturation']
+        recent = 'N/A'
+
+        print(data)
+
+        for vital in vitals:
+            for i in range(len(data)):
+                if data[i].find(vital) != -1:
+                    recent = data[i]
+                    timestamp = data[i + 1]
+            print(recent + ', Timestamp: ' + timestamp)
+
+        #patient_layout = self.root.ids.patient
+            #patient_layout.add_widget(Label(text=''))
 
     def on_encounters_not_loaded(self, request, error):
         self.root.ids.patient.add_widget(Label(text='[Failed to load patient information.  Please try again.]'))

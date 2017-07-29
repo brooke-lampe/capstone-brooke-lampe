@@ -72,7 +72,7 @@ ScreenManager:
                     id: openmrs_id
                     size_hint: 0.5, 1
                     font_size: '24sp'
-                    text: '10002T'
+                    text: '10000X'
             Label:
                 size_hint: 0.5, 0.5
             BoxLayout:
@@ -103,7 +103,6 @@ ScreenManager:
                     size_hint: 0.5, 0.5
                     on_press:
                         root.transition.direction = 'left'
-                        root.current = 'summary'
                         app.load_patient()
     Screen:
         name: 'summary'
@@ -139,5 +138,6 @@ ScreenManager:
                         root.ids.openmrs_id.text = ''
                         root.ids.retrieve.text = ''
                         root.ids.retrieve2.text = ''
+                        root.ids.patient.clear_widgets()
                         root.transition.direction = 'right'
                         root.current = 'selection'
