@@ -19,7 +19,6 @@ class RestApp(App):
 
     def on_session_loaded(self, request, response):
         if response['authenticated']:
-            self.root.ids.session2.text = 'Welcome, {user}, you have logged in successfully.'.format(user=response['user']['display'])
             self.root.current = 'selection'
         else:
             self.root.ids.session.text = 'Unable to authenticate.  Invalid username or password.'
@@ -63,45 +62,56 @@ class RestApp(App):
             for ob in result['obs']:
                 data.append(ob['display'])
                 data.append(ob['obsDatetime'])
-                #print(ob['display'])
-                #print(ob['obsDatetime'])
 
+        self.display_diagnosis(data)
         self.display_vitals(data)
+        self.display_labs(data)
 
-    def display_vitals(self, data):
-        vitals = ['Height', 'Weight', 'Temperature', 'Pulse', 'Respiratory rate', 'Systolic blood pressure', 'Diastolic blood pressure', 'Blood oxygen saturation']
-        recent = 'N/A'
-
+    def display_diagnosis(self, data):
+        timestamp = 'N/A'
+        diagnosis_array = []
         print(data)
 
+        diagnosis_layout = self.root.ids.diagnosis
+        for i in range(len(data)):
+            if data[i].find('Visit Diagnoses:') != -1:
+                timestamp = data[i + 1]
+                diagnosis_array.append(data[i])
+                diagnosis_array.append(data[i + 1])
+
+        for j in range(len(diagnosis_array)):
+            if diagnosis_array[j] == timestamp:
+                diagnosis_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=diagnosis_array[j - 1], timestamp=timestamp)))
+
+    def display_vitals(self, data):
+        vitals = ['Height (cm):', 'Weight (kg):', 'Temperature (C):', 'Pulse:', 'Respiratory rate:', 'Systolic blood pressure:', 'Diastolic blood pressure:', 'Blood oxygen saturation:']
+        recent = 'N/A'
+        timestamp = 'N/A'
+
+        vitals_layout = self.root.ids.vitals
         for vital in vitals:
             for i in range(len(data)):
                 if data[i].find(vital) != -1:
                     recent = data[i]
                     timestamp = data[i + 1]
-            print(recent + ', Timestamp: ' + timestamp)
+            vitals_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=recent, timestamp=timestamp)))
 
-        #patient_layout = self.root.ids.patient
-            #patient_layout.add_widget(Label(text=''))
+    def display_labs(self, data):
+        labs = ['Leukocytes (#/mL)', 'Blasts per 100 Leukocytes', 'Platelets', 'Partial Thromboplastin Time', 'Glucose', 'Lactate', 'Creatinine',
+                'Bilirubin Direct', 'Bilirubin Total', 'Blood Cultures, Bacteria', 'Blood Cultures, Fungus', 'Blood Cultures, Viruses', 'Urinalysis']
+        recent = 'N/A'
+        timestamp = 'N/A'
+
+        labs_layout = self.root.ids.labs
+        for lab in labs:
+            for i in range(len(data)):
+                if data[i].find(lab) != -1:
+                    recent = data[i]
+                    timestamp = data[i + 1]
+            labs_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=recent, timestamp=timestamp)))
 
     def on_encounters_not_loaded(self, request, error):
         self.root.ids.patient.add_widget(Label(text='[Failed to load patient information.  Please try again.]'))
-        Logger.error('RestApp: {error}'.format(error=error))
-
-    #The code below will ultimately be deleted
-    def load_locations(self):
-        self.root.ids.results.clear_widgets()
-        self.openmrs_connection.send_request('location', None, self.on_locations_loaded,
-                                             self.on_locations_not_loaded, self.on_locations_not_loaded)
-
-    def on_locations_loaded(self, request, response):
-        results_layout = self.root.ids.results
-        for result in response['results']:
-            results_layout.add_widget(Label(text=result['display']))
-        print(str(response))
-
-    def on_locations_not_loaded(self, request, error):
-        self.root.ids.results.add_widget(Label(text='[Failed to load locations]'))
         Logger.error('RestApp: {error}'.format(error=error))
 
 

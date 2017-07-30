@@ -72,7 +72,7 @@ ScreenManager:
                     id: openmrs_id
                     size_hint: 0.5, 1
                     font_size: '24sp'
-                    text: '10000X'
+                    text: '10002T'
             Label:
                 size_hint: 0.5, 0.5
             BoxLayout:
@@ -94,7 +94,9 @@ ScreenManager:
                         root.ids.password.text = ''
                         root.ids.session.text = ''
                         root.ids.session2.text = ''
-                        root.ids.patient.clear_widgets()
+                        root.ids.diagnosis.clear_widgets()
+                        root.ids.vitals.clear_widgets()
+                        root.ids.labs.clear_widgets()
                         root.transition.direction = 'right'
                         root.current = 'log_in'
                         app.connect()
@@ -113,8 +115,17 @@ ScreenManager:
                 font_size: '30sp'
                 color: (0.6, 0.1, 0.9)
             BoxLayout:
+                id: diagnosis
                 orientation: 'vertical'
-                id: patient
+                size_hint: 1, 0.6
+            BoxLayout:
+                id: vitals
+                orientation: 'vertical'
+                size_hint: 1, 1.2
+            BoxLayout:
+                id: labs
+                orientation: 'vertical'
+                size_hint: 1, 2
             BoxLayout:
                 orientation: 'horizontal'
                 Button:
@@ -127,7 +138,9 @@ ScreenManager:
                         root.ids.openmrs_id.text = ''
                         root.ids.retrieve.text = ''
                         root.ids.retrieve2.text = ''
-                        root.ids.patient.clear_widgets()
+                        root.ids.diagnosis.clear_widgets()
+                        root.ids.vitals.clear_widgets()
+                        root.ids.labs.clear_widgets()
                         root.transition.direction = 'right'
                         root.current = 'log_in'
                         app.connect()
@@ -138,6 +151,8 @@ ScreenManager:
                         root.ids.openmrs_id.text = ''
                         root.ids.retrieve.text = ''
                         root.ids.retrieve2.text = ''
-                        root.ids.patient.clear_widgets()
+                        root.ids.diagnosis.clear_widgets()
+                        root.ids.vitals.clear_widgets()
+                        root.ids.labs.clear_widgets()
                         root.transition.direction = 'right'
                         root.current = 'selection'
