@@ -33,6 +33,7 @@ ScreenManager:
             BoxLayout:
                 orientation: 'vertical'
                 Label:
+                Label:
                     id: session
                     font_size: '24sp'
                     text: ''
@@ -118,6 +119,11 @@ ScreenManager:
                     text: 'OpenMRS Patient Information App'
                     font_size: '30sp'
                     color: (0.6, 0.1, 0.9)
+                    size_hint: 1, None
+                    height: 80
+                Label:
+                    text: 'Diagnosis'
+                    color: (1, 0, 0)
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: 1, None
@@ -130,6 +136,9 @@ ScreenManager:
                         id: diagnosis_timestamp
                         orientation: 'vertical'
                         size_hint: 0.8, 1
+                Label:
+                    text: 'Vitals'
+                    color: (1, 0, 0)
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: 1, None
@@ -142,6 +151,9 @@ ScreenManager:
                         id: vitals_timestamp
                         orientation: 'vertical'
                         size_hint: 0.8, 1
+                Label:
+                    text: 'Labs'
+                    color: (1, 0, 0)
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint: 1, None
@@ -158,7 +170,8 @@ ScreenManager:
                     orientation: 'horizontal'
                     Button:
                         text: 'Log Out'
-                        size_hint: 0.5, 0.5
+                        size_hint: 0.5, None
+                        height: 50
                         on_press:
                             root.ids.password.text = ''
                             root.ids.session.text = ''
@@ -177,7 +190,8 @@ ScreenManager:
                             app.connect()
                     Button:
                         text: 'Return to Patient Selection'
-                        size_hint: 0.5, 0.5
+                        size_hint: 0.5, None
+                        height: 50
                         on_press:
                             root.ids.openmrs_id.text = ''
                             root.ids.retrieve.text = ''
