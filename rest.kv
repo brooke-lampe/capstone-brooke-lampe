@@ -18,7 +18,6 @@ ScreenManager:
                     id: username
                     size_hint: 0.5, 1
                     font_size: '24sp'
-                    text: 'brian'
             BoxLayout:
                 orientation: 'horizontal'
                 Label:
@@ -31,7 +30,6 @@ ScreenManager:
                     password: True
                     size_hint: 0.5, 1
                     font_size: '24sp'
-                    text: 'Brian123'
             BoxLayout:
                 orientation: 'vertical'
                 Label:
@@ -72,7 +70,6 @@ ScreenManager:
                     id: openmrs_id
                     size_hint: 0.5, 1
                     font_size: '24sp'
-                    text: '10002T'
             Label:
                 size_hint: 0.5, 0.5
             BoxLayout:
@@ -97,6 +94,9 @@ ScreenManager:
                         root.ids.diagnosis.clear_widgets()
                         root.ids.vitals.clear_widgets()
                         root.ids.labs.clear_widgets()
+                        root.ids.diagnosis_timestamp.clear_widgets()
+                        root.ids.vitals_timestamp.clear_widgets()
+                        root.ids.labs_timestamp.clear_widgets()
                         root.transition.direction = 'right'
                         root.current = 'log_in'
                         app.connect()
@@ -108,51 +108,83 @@ ScreenManager:
                         app.load_patient()
     Screen:
         name: 'summary'
-        BoxLayout:
-            orientation: 'vertical'
-            Label:
-                text: 'OpenMRS Patient Information App'
-                font_size: '30sp'
-                color: (0.6, 0.1, 0.9)
+        ScrollView:
+            do_scroll_x: False
+            bar_color: (0.6, 0.1, 0.9)
+            bar_inactive_color: (0.6, 0.1, 0.9)
             BoxLayout:
-                id: diagnosis
                 orientation: 'vertical'
-                size_hint: 1, 0.6
-            BoxLayout:
-                id: vitals
-                orientation: 'vertical'
-                size_hint: 1, 1.2
-            BoxLayout:
-                id: labs
-                orientation: 'vertical'
-                size_hint: 1, 2
-            BoxLayout:
-                orientation: 'horizontal'
-                Button:
-                    text: 'Log Out'
-                    size_hint: 0.5, 0.5
-                    on_press:
-                        root.ids.password.text = ''
-                        root.ids.session.text = ''
-                        root.ids.session2.text = ''
-                        root.ids.openmrs_id.text = ''
-                        root.ids.retrieve.text = ''
-                        root.ids.retrieve2.text = ''
-                        root.ids.diagnosis.clear_widgets()
-                        root.ids.vitals.clear_widgets()
-                        root.ids.labs.clear_widgets()
-                        root.transition.direction = 'right'
-                        root.current = 'log_in'
-                        app.connect()
-                Button:
-                    text: 'Return to Patient Selection'
-                    size_hint: 0.5, 0.5
-                    on_press:
-                        root.ids.openmrs_id.text = ''
-                        root.ids.retrieve.text = ''
-                        root.ids.retrieve2.text = ''
-                        root.ids.diagnosis.clear_widgets()
-                        root.ids.vitals.clear_widgets()
-                        root.ids.labs.clear_widgets()
-                        root.transition.direction = 'right'
-                        root.current = 'selection'
+                Label:
+                    text: 'OpenMRS Patient Information App'
+                    font_size: '30sp'
+                    color: (0.6, 0.1, 0.9)
+                BoxLayout:
+                    orientation: 'horizontal'
+                    BoxLayout:
+                        id: diagnosis
+                        orientation: 'vertical'
+                        size_hint: 1.2, 1
+                    BoxLayout:
+                        id: diagnosis_timestamp
+                        orientation: 'vertical'
+                        size_hint: 0.8, 1
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, None
+                    height: 150
+                    BoxLayout:
+                        id: vitals
+                        orientation: 'vertical'
+                        size_hint: 1.2, 1
+                    BoxLayout:
+                        id: vitals_timestamp
+                        orientation: 'vertical'
+                        size_hint: 0.8, 1
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint: 1, None
+                    height: 220
+                    BoxLayout:
+                        id: labs
+                        orientation: 'vertical'
+                        size_hint: 1.2, 1
+                    BoxLayout:
+                        id: labs_timestamp
+                        orientation: 'vertical'
+                        size_hint: 0.8, 1
+                BoxLayout:
+                    orientation: 'horizontal'
+                    Button:
+                        text: 'Log Out'
+                        size_hint: 0.5, 0.5
+                        on_press:
+                            root.ids.password.text = ''
+                            root.ids.session.text = ''
+                            root.ids.session2.text = ''
+                            root.ids.openmrs_id.text = ''
+                            root.ids.retrieve.text = ''
+                            root.ids.retrieve2.text = ''
+                            root.ids.diagnosis.clear_widgets()
+                            root.ids.vitals.clear_widgets()
+                            root.ids.labs.clear_widgets()
+                            root.ids.diagnosis_timestamp.clear_widgets()
+                            root.ids.vitals_timestamp.clear_widgets()
+                            root.ids.labs_timestamp.clear_widgets()
+                            root.transition.direction = 'right'
+                            root.current = 'log_in'
+                            app.connect()
+                    Button:
+                        text: 'Return to Patient Selection'
+                        size_hint: 0.5, 0.5
+                        on_press:
+                            root.ids.openmrs_id.text = ''
+                            root.ids.retrieve.text = ''
+                            root.ids.retrieve2.text = ''
+                            root.ids.diagnosis.clear_widgets()
+                            root.ids.vitals.clear_widgets()
+                            root.ids.labs.clear_widgets()
+                            root.ids.diagnosis_timestamp.clear_widgets()
+                            root.ids.vitals_timestamp.clear_widgets()
+                            root.ids.labs_timestamp.clear_widgets()
+                            root.transition.direction = 'right'
+                            root.current = 'selection'

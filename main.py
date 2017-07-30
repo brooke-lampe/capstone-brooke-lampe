@@ -70,9 +70,9 @@ class RestApp(App):
     def display_diagnosis(self, data):
         timestamp = 'N/A'
         diagnosis_array = []
-        print(data)
 
         diagnosis_layout = self.root.ids.diagnosis
+        diagnosis_timestamp_layout = self.root.ids.diagnosis_timestamp
         for i in range(len(data)):
             if data[i].find('Visit Diagnoses:') != -1:
                 timestamp = data[i + 1]
@@ -81,7 +81,8 @@ class RestApp(App):
 
         for j in range(len(diagnosis_array)):
             if diagnosis_array[j] == timestamp:
-                diagnosis_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=diagnosis_array[j - 1], timestamp=timestamp)))
+                diagnosis_layout.add_widget(Label(text=diagnosis_array[j - 1]))
+                diagnosis_timestamp_layout.add_widget(Label(text=timestamp))
 
     def display_vitals(self, data):
         vitals = ['Height (cm):', 'Weight (kg):', 'Temperature (C):', 'Pulse:', 'Respiratory rate:', 'Systolic blood pressure:', 'Diastolic blood pressure:', 'Blood oxygen saturation:']
@@ -89,12 +90,14 @@ class RestApp(App):
         timestamp = 'N/A'
 
         vitals_layout = self.root.ids.vitals
+        vitals_timestamp_layout = self.root.ids.vitals_timestamp
         for vital in vitals:
             for i in range(len(data)):
                 if data[i].find(vital) != -1:
                     recent = data[i]
                     timestamp = data[i + 1]
-            vitals_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=recent, timestamp=timestamp)))
+            vitals_layout.add_widget(Label(text=recent))
+            vitals_timestamp_layout.add_widget(Label(text=timestamp))
 
     def display_labs(self, data):
         labs = ['Leukocytes (#/mL)', 'Blasts per 100 Leukocytes', 'Platelets', 'Partial Thromboplastin Time', 'Glucose', 'Lactate', 'Creatinine',
@@ -103,12 +106,14 @@ class RestApp(App):
         timestamp = 'N/A'
 
         labs_layout = self.root.ids.labs
+        labs_timestamp_layout = self.root.ids.labs_timestamp
         for lab in labs:
             for i in range(len(data)):
                 if data[i].find(lab) != -1:
                     recent = data[i]
                     timestamp = data[i + 1]
-            labs_layout.add_widget(Label(text='{recent}, Timestamp: {timestamp}'.format(recent=recent, timestamp=timestamp)))
+            labs_layout.add_widget(Label(text=recent))
+            labs_timestamp_layout.add_widget(Label(text=timestamp))
 
     def on_encounters_not_loaded(self, request, error):
         self.root.ids.patient.add_widget(Label(text='[Failed to load patient information.  Please try again.]'))
