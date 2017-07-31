@@ -41,29 +41,29 @@ Patient Summary
         No
 
 Test Frame                      Code Under Test                 Implemented By                  Relevant Categories
-username = admin                "Log In" Screen                 test_invalid_connection         Not connected to OpenMRS, valid username, valid password
+username = admin                'Log In' Screen                 test_invalid_connection         Not connected to OpenMRS, valid username, valid password
 password = Admin123
 
-username = 123                  "Log In" Screen                 test_invalid_credentials        Connected to OpenMRS, invalid username, invalid password
+username = 123                  'Log In' Screen                 test_invalid_credentials        Connected to OpenMRS, invalid username, invalid password
 password = 123
 
-username = admin                "Log In" Screen                 test_invalid_password           Connected to OpenMRS, valid username, invalid password
+username = admin                'Log In' Screen                 test_invalid_password           Connected to OpenMRS, valid username, invalid password
 password = 123
 
-username = admin                "Log In" Screen                 test_valid_all                  Connected to OpenMRS, valid username, valid password
+username = admin                'Log In' Screen                 test_valid_all                  Connected to OpenMRS, valid username, valid password
 password = Admin123
 
-OpenMRS ID = invalid            "Patient Selection" Screen      test_invalid_id                 Connected to OpenMRS, invalid id, clicked 'Select Patient'
+OpenMRS ID = invalid            'Patient Selection' Screen      test_invalid_id                 Connected to OpenMRS, invalid id, clicked 'Select Patient'
 Clicked 'Select Patient'
 
-OpenMRS ID = invalid            "Patient Selection" Screen      test_log_out                    Connected to OpenMRS, clicked 'Log Out'
+OpenMRS ID = invalid            'Patient Selection' Screen      test_log_out                    Connected to OpenMRS, clicked 'Log Out'
 Clicked 'Log Out'
 
-OpenMRS ID = valid (Rachel      "Patient Selection" Screen      test_valid_id                   Connected to OpenMRS, valid id, clicked 'Select Patient'
+OpenMRS ID = valid (Rachel      'Patient Selection' Screen      test_valid_id                   Connected to OpenMRS, valid id, clicked 'Select Patient'
                     Storm)
 Clicked 'Select Patient'
 
-OpenMRS ID = valid (Rachel      "Patient Selection" Screen      test_connection_lost            Not connected to OpenMRS, valid id, clicked 'Select Patient'
+OpenMRS ID = valid (Rachel      'Patient Selection' Screen      test_connection_lost            Not connected to OpenMRS, valid id, clicked 'Select Patient'
                     Storm)
 Clicked 'Select Patient'
 
