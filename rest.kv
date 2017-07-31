@@ -92,6 +92,7 @@ ScreenManager:
                         root.ids.password.text = ''
                         root.ids.session.text = ''
                         root.ids.session2.text = ''
+                        root.ids.openmrs_id.text = ''
                         root.ids.diagnosis.clear_widgets()
                         root.ids.vitals.clear_widgets()
                         root.ids.labs.clear_widgets()
@@ -206,7 +207,6 @@ ScreenManager:
                         size_hint: 0.5, None
                         height: 50
                         on_press:
-                            root.ids.openmrs_id.text = ''
                             root.ids.retrieve.text = ''
                             root.ids.retrieve2.text = ''
                             root.ids.diagnosis.clear_widgets()
