@@ -1,0 +1,187 @@
+The following actions will prepare the database for the system tests of the
+Patient Information App.
+
+1.  Connect to OpenMRS
+        a. In PyCharm, right-click on the project folder
+        b. In the dropdown menu, navigate to "External Tools" -> "OpenMRS"
+        c. Click on "OpenMRS" and wait for OpenMRS to load (about five minutes)
+2.  In Firefox, navigate to http://localhost:8080/openmrs/login.htm
+3.  Type the username "admin" in the "Username" field and type the password "Admin123" in the "Password" field
+4.  Select "Inpatient Ward"
+5.  Click "Log In"
+
+The app should show the main menu for "Super User () at at Inpatient Ward"
+
+6.  Click "Register a patient"
+7.  Walk through the patient registration screen, providing the following information:
+        Name:  Rachel Storm
+        Gender:  Female
+        Birthdate:  13 November 1998
+        Address:
+            Address:  123 North Street
+        Phone Number:  [blank]
+        Relatives:  [blank]
+8.  Click "Confirm"
+9.  Click on the home icon to return to the main menu
+10. Repeat the process with the following information:
+        Name:  James Bond
+        Gender:  Male
+        Birthdate:  02 June 1980
+        Address:
+            Address:  123 Skyfall
+            City/Village:  London
+            Country:  England
+        Phone Number: [blank]
+        Relatives: [blank]
+11. Repeat the process with the following information:
+        Name:  Courtney Spring
+        Gender:  Female
+        Birthdate:  17 February 1996
+        Address:
+            Address:  821 Stevens Street
+            City/Village:  Flint
+            State:  MI
+        Phone Number:  [blank]
+        Relatives:  [blank]
+12. From the main menu, click on "Find Patient Record"
+
+The app should show three patients, Courtney Spring, James Bond, and Rachel Storm.
+To the left of the patients' names, the app should show a patient identifier.
+
+13. Click on the patient "Rachel Storm"
+14. In the next screen, on the right side, under "General Actions," click "Start Visit"
+15. When prompted, click "Confirm"
+16. In the next screen, click "Capture Vitals"
+17. Fill in the form with the value "30" for each field
+    Blood pressure should issue a warning that the minimum blood pressure is "50,"
+    so fill in "50" in that field
+18. When prompted, click "Confirm"
+19. Click on the home icon to return to the main menu
+20. Click "Lab Entry" and then click on the patient "Rachel Storm"
+21. In all fields, type the value "30" or select "negative" from the dropdown menu,
+    whichever is applicable
+22. When prompted, click "Confirm"
+23. Return to the main menu, click on "Find Patient Record," and click on "Rachel Storm"
+24. In the menu on the right side, under "Current Visit Actions," click on "Visit Note"
+25. Type "Anaemia"
+    Anaemia should now appear under the heading "Primary Diagnosis"
+    The primary box should be selected; next to the primary box, check the box "Confirmed"
+26. Click "Save"
+
+The app should show Rachel Storm's information, and the information filled in earlier
+should be visible
+
+27. Under "Current Visit Actions," click "End Visit"
+28. Return to main menu, then "Find Patient Record," and click on patient "James Bond"
+29. Click on "Start Visit" for James Bond and then click on "Visit Note"
+30. Set the primary diagnosis to "Fatigue," then add a secondary diagnosis of "Acute Pain"
+31. Save and then click "End Visit"
+32. Navigate to the patient "Rachel Storm" and click "Start Visit"
+33. Click on "Capture Vitals"
+34. Record a pulse of value "40" and a respiratory rate of value "40"
+35. Leave the remaining fields blank and click "Confirm" and "Save"
+36. Click "End Visit" for Rachel Storm
+37. Click "Find Patient Record" and record the patient identifiers of each of the patients
+
+System Tests for "Log In" Screen
+
+test_invalid_connection
+38. Disconnect from OpenMRS
+    a. Go to the run menu at the bottom of PyCharm
+    b. Click on "OpenMRS"
+    c. Click on the red square
+39. Start the Patient Information App
+40. Type "admin" for the username and "Admin123" for the password
+41. Click "Log In"
+
+A message "Unable to connect.  Please verify internet connection and try again." should appear
+
+test_invalid_credentials
+42. Connect to OpenMRS
+        a. Right-click on the project folder
+        b. In the dropdown menu, navigate to "External Tools" -> "OpenMRS"
+        c. Click on "OpenMRS" and wait for OpenMRS to load (about five minutes)
+        d. Verify the connection by returning to the OpenMRS web site in Firefox
+43. Start the Patient Information App
+44. Type "123" for the username and "123" for the password
+
+A message "Unable to authenticate.  Invalid username or password.  Please verify credentials
+and try again." should appear
+
+test_invalid_password
+46. Start the Patient Information App
+47. Type "admin" for the username and "123" for the password
+
+The app should show the same error message as the previous test
+
+test_valid_all
+48. Start the Patient Information App
+49. Type "admin" for the username and "Admin123" for the password
+
+The app should continue to the "Patient Selection" screen
+
+System Tests for "Patient Selection" Screen
+
+For the remaining system tests, unless explicitly stated otherwise, use "admin" for the username
+and "Admin123" for the password, click "Log In," and remain connected to OpenMRS
+
+test_invalid_id
+50. In the "Patient Selection" screen, type an invalid identifier (not one of the identifiers
+you recorded) in the "OpenMRS ID" text box
+51. Click "Select Patient"
+
+A message "Unable to retrieve patient information.  Please verify that the OpenMRS ID
+is correct and try again." should appear
+
+test_log_out
+52. In the "Patient Selection" screen, type an invalid identifier (not one of the identifiers
+you recorded) in the "OpenMRS ID" text box
+53. Click "Log Out"
+
+The app should show the "Log In" screen
+
+test_valid_id
+54. In the "Patient Selection" screen, type the identifier for "Rachel Storm"
+55. Click "Select Patient"
+
+The app should show the "Patient Summary" screen
+
+test_connection_lost
+56. In the "Patient Selection" screen, type the identifier for "Rachel Storm"
+57. Disconnect from OpenMRS
+58. Click "Select Patient"
+
+A message "Unable to connect.  Please verify internet connection and try again." should appear
+
+System Tests for "Patient Summary" Screen
+
+test_all_data
+59. In the "Patient Selection" screen, type the identifier for "Rachel Storm"
+60. Click "Select Patient"
+61. Verify that data is grouped under the headings "Diagnosis," "Vitals," and "Labs"
+and that Rachel Storm's data matches that entered earlier
+    a. Under "Diagnosis," Rachel is diagnosed with "Anaemia"
+    b. Under "Vitals," Rachel's values should be "30," except Systolic blood pressure,
+    which should be "50," and Pulse and Respiratory rate, which should be "40," since
+    they were more recent
+    c. Under "Labs," all values should be "30" or "negative"
+62. Click "Return to Patient Selection" when you have verified the values
+
+test_some_data
+63. In the "Patient Selection" screen, type the identifier for "James Bond"
+64. Click "Select Patient"
+65. Verify that data is grouped under the headings "Diagnosis," "Vitals," and "Labs"
+and that James Bond's data matches that entered earlier
+    a. Under "Diagnosis," James is diagnosed with "Fatigue" as a primary diagnosis and
+    "Acute Pain" as a secondary diagnosis
+    b. James should have no data under the remaining headings
+66. Click "Return to Patient Selection" when you have verified the values
+
+test_no_data
+67. In the "Patient Selection" screen, type the identifier for "Courtney Spring"
+68. Click "Select Patient"
+69. Verify that the headings "Diagnosis," "Vitals," and "Labs" appear, and that
+there is no data shown
+70. Click "Log Out"
+
+The app should show the "Log In" screen
